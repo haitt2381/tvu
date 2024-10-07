@@ -63,14 +63,41 @@ bool isUndirectedGraph(Graph g) {
     return true;
 }
 
+int getVertexDegree (const Graph &g, const int vertex) {
+    int degree = 0;
+    for(int i = 0; i < g.n; i++) {
+        if(g.a[i][vertex] == 1) {
+            degree++;
+        }
+    }
+    return degree;
+}
+
+int findVertexWithMaxDegree(const Graph &g) {
+    int maxVertex = 0;
+    for(int i = 1; i < g.n; i++) {
+        if (getVertexDegree(g, i) > getVertexDegree(g, maxVertex)) {
+            maxVertex = i;
+        }
+    }
+    return maxVertex;
+}
+
+void printVertexDegree(const Graph &g) {
+    for (int i = 0; i < g.n; i++) {
+        cout << "Vertex degree: " << i+1 << " is " << getVertexDegree(g, i) << endl;;
+    }
+}
+
 int main() {
     const string fn = "graph.txt";
     Graph g1{};
     readGraphFromFile(fn, g1);
-    // inputGraph(g1);
     printGraph(g1);
     const string msg = isUndirectedGraph(g1) ? "This is undirected graph" : "This is not undirected graph";
     cout << msg << endl;
-    // saveGraphToFile(g1);
+
+    printVertexDegree(g1);
+    cout << "Vertex with max degree is " << findVertexWithMaxDegree(g1) + 1 << endl;
     return 0;
 }
