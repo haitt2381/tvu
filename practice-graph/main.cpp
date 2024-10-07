@@ -89,15 +89,62 @@ void printVertexDegree(const Graph &g) {
     }
 }
 
-int main() {
-    const string fn = "graph.txt";
-    Graph g1{};
-    readGraphFromFile(fn, g1);
-    printGraph(g1);
-    const string msg = isUndirectedGraph(g1) ? "This is undirected graph" : "This is not undirected graph";
-    cout << msg << endl;
+Graph g{};
+int globalLabel[MAX];
 
-    printVertexDegree(g1);
-    cout << "Vertex with max degree is " << findVertexWithMaxDegree(g1) + 1 << endl;
+void markConnectedComponents(const int i, const int label) {
+    globalLabel[i] = label;
+
+    for (int j=0; j < g.n; j++) {
+        if (globalLabel[j] == 0 && g.a[i][j] != 0) {
+            markConnectedComponents(j, label);
+        }
+    }
+}
+
+int countConnectedComponents() {
+    int connectedCount = 0;
+    for (int i = 0; i < g.n; i++) {
+        globalLabel[i] = 0;
+    }
+
+    for (int i = 0; i < g.n; i++) {
+        if(globalLabel[i] == 0) {
+            connectedCount++;
+            markConnectedComponents(i, connectedCount);
+        }
+    }
+
+    return connectedCount;
+}
+
+void printConnectedComponent(const int connectedCount) {
+    for (int i = 1; i <= connectedCount; i++) {
+        cout << "The connected component " << i << " has vertices: ";
+        for (int j = 0; j < g.n; j++) {
+            if (globalLabel[j] == i) {
+                cout << setw(6) << j + 1;
+            }
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    const string fn = "graph2.txt";
+    readGraphFromFile(fn, g);
+    printGraph(g);
+    const string msg = isUndirectedGraph(g) ? "This is undirected graph" : "This is not undirected graph";
+    cout << msg << endl;
+    cout << "Vertex with max degree is " << findVertexWithMaxDegree(g) + 1 << endl;
+    const int connectedCount = countConnectedComponents();
+    if (connectedCount == 1) {
+        cout << "This graph is connected" << endl;
+    } else {
+        cout << "This graph is not connected, the graph has " << connectedCount << " connected component" << endl;
+    }
+
+    printConnectedComponent(connectedCount);
+
     return 0;
 }
