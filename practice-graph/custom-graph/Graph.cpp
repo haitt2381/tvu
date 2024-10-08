@@ -189,7 +189,7 @@ void Graph::BFS(int s) {
     }
 }
 
-bool Graph::isEulerGraph() const {
+bool Graph::isEulerCycle() const {
     for (int i = 0; i < n; i++) {
         int degree = 0;
         for (int j = 0; j < n; j++) {
@@ -202,5 +202,50 @@ bool Graph::isEulerGraph() const {
 
     return true;
 }
+
+void copyMatrix(const int a[MAX][MAX], int temp[MAX][MAX]) {
+    // Copy using nested loops
+    for (int i = 0; i < MAX; ++i) {
+        std::copy(a[i], a[i] + MAX, temp[i]);  // Copy each row
+    }
+}
+
+void Graph::findEulerCycle(int s) const {
+    int tempMatrix[MAX][MAX];
+    copyMatrix(a, tempMatrix);
+    int visited[MAX];
+    int eulerElementCount = 0;
+    int x, index;
+
+    stack<int> myStack;
+    myStack.push(s);
+    while (!myStack.empty()) {
+        x = myStack.top();
+        for (index = 0; index < n; index++) {
+            if(tempMatrix[x][index] != 0) { // lay dinh dau tien trong danh sach cac dinh ke voi x
+                break;
+            }
+        }
+
+        if (index < n) {
+            myStack.push(index);
+            tempMatrix[x][index] = 0;
+            tempMatrix[index][x] = 0;
+        } else {
+            myStack.pop();
+            visited[eulerElementCount] = x;
+            eulerElementCount++;
+        }
+    }
+
+    // Xuat thu tu cac dinh trong chu trinh Euler
+    for(int i =0; i < eulerElementCount; i++) {
+        cout << setw(6) << visited[i] + 1;
+    }
+    cout << endl;
+}
+
+
+
 
 

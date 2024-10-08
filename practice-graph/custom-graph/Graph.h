@@ -41,7 +41,8 @@ public:
     void DFS(int s);
     void BFS(int s);
 
-    [[nodiscard]] bool isEulerGraph() const;
+    [[nodiscard]] bool isEulerCycle() const;
+    void findEulerCycle(int s) const;
 
 private:
     void markConnectedComponents(int i, int label);

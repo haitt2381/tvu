@@ -3,7 +3,7 @@
 int main() {
     Graph graph;
 
-    const string fn = "graph3.txt";
+    const string fn = "../graph-matrix-example/graph-euler-cycle.txt";
     graph.readGraphFromFile(fn);
     graph.printGraph();
 
@@ -26,6 +26,15 @@ int main() {
     cout << endl;
     cout << "BFS: ";
     graph.BFS(0);
+    cout << endl;
+
+    if(graph.isEulerCycle()) {
+        cout << "Euler: ";
+        graph.findEulerCycle(0);
+    } else {
+        cout << "This graph is not euler cycle";
+    }
+    cout << endl;
     return 0;
 }
 
