@@ -3,7 +3,7 @@
 int main() {
     Graph graph;
 
-    const string fn = "graph2.txt";
+    const string fn = "graph3.txt";
     graph.readGraphFromFile(fn);
     graph.printGraph();
 
@@ -21,6 +21,11 @@ int main() {
 
     graph.printConnectedComponent(connectedCount);
 
+    cout << "DFS: ";
+    graph.DFS(0);
+    cout << endl;
+    cout << "BFS: ";
+    graph.BFS(0);
     return 0;
 }
 

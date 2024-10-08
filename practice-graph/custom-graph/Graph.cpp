@@ -1,6 +1,8 @@
 // Graph.cpp
 
 #include "Graph.h"
+#include <stack>
+#include <queue>
 
 // Constructor
 Graph::Graph() : n(0) {
@@ -134,3 +136,71 @@ void Graph::printConnectedComponent(int connectedCount) const {
         cout << endl;
     }
 }
+
+void Graph::DFS(int s) {
+    int visited[MAX];
+    stack<int> myStack;
+
+    //init
+    for(int i = 0; i < n; i++) {
+        visited[i] = 0;
+    }
+
+    myStack.push(s);
+    while (!myStack.empty()) {              //Khi stack vẫn còn du lieu
+        // xet dinh o dau stack
+        int v = myStack.top();
+        myStack.pop();
+
+        if (visited[v] != 1) {              //neu v chua duoc duyet
+            cout << setw(6) << v;         //print
+            visited[v] = 1;                 //duyet v
+            for (int i = 0; i < n; i++) {   // xet cac dinh chua duyet co noi voi v
+                if (visited[i] == 0 && a[v][i] != 0) {
+                    myStack.push(i);
+                }
+            }
+        }
+    }
+}
+
+void Graph::BFS(int s) {
+    int visited[MAX];
+    queue<int> myQueue;
+
+    for (int i=0; i < n; i++) { // int
+        visited[i] = 0;
+    }
+
+    myQueue.push(s);
+    while (!myQueue.empty()) {
+        int v = myQueue.front();
+        myQueue.pop();
+
+        if(visited[v] == 0) {
+            cout << setw(6) << v;
+            visited[v] = 1;
+            for (int i = 0; i < n; i++) {
+                if (visited[i] == 0 && a[v][i]) {
+                    myQueue.push(i);
+                }
+            }
+        }
+    }
+}
+
+bool Graph::isEulerGraph() const {
+    for (int i = 0; i < n; i++) {
+        int degree = 0;
+        for (int j = 0; j < n; j++) {
+            degree += a[i][j];
+        }
+        if (degree % 2 == 1) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+

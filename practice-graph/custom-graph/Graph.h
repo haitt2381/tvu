@@ -28,14 +28,20 @@ public:
     void readGraphFromFile(const string& filename);
 
     // Graph properties and operations
-    bool isUndirectedGraph() const;
-    int getVertexDegree(int vertex) const;
-    int findVertexWithMaxDegree() const;
+    [[nodiscard]] bool isUndirectedGraph() const;
+    [[nodiscard]] int getVertexDegree(int vertex) const;
+    [[nodiscard]] int findVertexWithMaxDegree() const;
     void printVertexDegree() const;
 
     // Connected components
     int countConnectedComponents();
     void printConnectedComponent(int connectedCount) const;
+
+    //Algorithm
+    void DFS(int s);
+    void BFS(int s);
+
+    [[nodiscard]] bool isEulerGraph() const;
 
 private:
     void markConnectedComponents(int i, int label);
